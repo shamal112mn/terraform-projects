@@ -1,0 +1,44 @@
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "source_ami_filter": {
+          "filters": {
+              "virtualization-type": "hvm",
+              "name": "CentOS Linux 7 x86_64 HVM EBS ENA 1901_01-b7ee8a69-ee97-4a49-9e68-afaee216db2e-*",
+              "root-device-type": "ebs"
+              },
+          "owners": ["679593333241"],
+          "most_recent": true
+          },
+      "instance_type": "t2.micro",
+      "ssh_username": "centos",
+      "ssh_keypair_name": "Packer_Key",
+      "ssh_private_key_file": "/home/ec2-user/.ssh/id_rsa",
+      "region": "us-east-1",
+      "ami_name": "r1soft-server {{timestamp}}"
+    }
+  ],
+  "provisioners": [{
+    "type": "file",
+       "source": "r1soft.repo",
+        "destination": "/tmp/"
+         },
+         
+      {
+    "type": "shell",
+       "inline":[
+          "sudo yum update -y",
+          "sudo mv  /tmp/r1soft.repo  /etc/yum.repos.d/",
+          "sudo yum install r1soft-cdp-enterprise-server -y",
+          "sudo r1soft-setup --user admin --pass  redhat   --http-port 8080",
+          "sudo systemctl restart cdp-server",
+          "sudo systemctl enable cdp-server"
+         ]
+       },
+       {
+        "type": "breakpoint",
+        "note": "Wait for you to delete"
+          }
+     ]
+}
