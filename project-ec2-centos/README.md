@@ -1,4 +1,4 @@
-# terraform-hw2 part2
+# terraform part2
 
 ### Task2 part2
 

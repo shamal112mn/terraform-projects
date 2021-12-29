@@ -1,4 +1,4 @@
-# terraform-hw2
+# terraform
 
 ### Task 1
 ``` 
